@@ -1,0 +1,9 @@
+streamlit
+pandas==1.4.4
+numpy==1.21.5
+scikit-learn
+matplotlib
+seaborn
+folium
+streamlit-folium
+streamlit-option-menu

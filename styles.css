@@ -1,0 +1,61 @@
+/* styles.css */
+
+.fixed-title {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+.main-content {
+    margin-top: 70px; /* Adjust this value based on the height of your fixed title */
+}
+
+/* Mengatur ukuran font dan gaya untuk judul */
+.custom-title {
+    font-size: 28px; /* Ukuran font yang lebih besar untuk judul */
+    font-weight: bold; /* Menebalkan font */
+    color: #333; /* Warna teks */
+    margin-top: 20px; /* Jarak atas */
+}
+
+/* Mengatur ukuran font dan gaya untuk subjudul */
+.custom-subtitle {
+    font-size: 22px; /* Ukuran font untuk subjudul */
+    font-weight: bold; /* Menebalkan font */
+    color: #555; /* Warna teks */
+    margin-top: 15px; /* Jarak atas */
+}
+
+/* Mengatur gaya untuk paragraf dan daftar */
+.custom-text {
+    font-size: 16px; /* Ukuran font untuk teks */
+    color: #666; /* Warna teks */
+    line-height: 1.6; /* Jarak antar baris */
+}
+
+/* Mengatur gaya untuk item daftar */
+.custom-list {
+    margin-left: 20px; /* Jarak kiri untuk item daftar */
+}
+
+.custom-image {
+    max-width: 80%; /* Mengatur lebar maksimal gambar agar responsif */
+    height: 20%; /* Mengatur tinggi gambar secara otomatis */
+    border-radius: 8px; /* Memberikan sudut melengkung pada gambar (opsional) */
+    margin-top: 20px; /* Jarak atas dari elemen lain (opsional) */
+}
+
+.stButton > button {
+    background-color: #007BFF; /* Biru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+.stButton > button:hover {
+    background-color: #0056b3; /* Biru lebih gelap saat hover */
+}
