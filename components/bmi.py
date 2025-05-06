@@ -1,8 +1,10 @@
 import streamlit as st
-import pandas as pd  # Tambahkan ini untuk mengimpor pandas
+import pandas as pd
 import os
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
 
-# Fungsi untuk mengkategorikan BMI dan memberikan rekomendasi berat badan
+# Fungsi untuk mengkategorikan BMI dan rekomendasi berat badan
 def kategori_bmi(bmi, height, weight):
     if bmi < 18.5:
         normal_weight_min = 18.5 * (height / 100) ** 2
@@ -23,16 +25,16 @@ def kategori_bmi(bmi, height, weight):
         lose_weight = weight - normal_weight_max
         return "Very obese", lose_weight, "turun"
 
-# Fungsi untuk melihat hasil
+# Fungsi untuk menampilkan hasil BMI
 def view_result(bmi, category, weight_change, action):
     st.write(f"Kategori BMI Anda: **{category}**")
 
     if category == "Normal":
-        st.write("BMI Anda sudah berada dalam kategori normal.")
+        st.success("BMI Anda sudah berada dalam kategori normal.")
     else:
-        st.write(f"Untuk mencapai kategori normal, Anda perlu {action} berat badan sebanyak {weight_change:.2f} kg.")
+        st.warning(f"Untuk mencapai kategori normal, Anda perlu {action} berat badan sebanyak {weight_change:.2f} kg.")
 
-    # Menampilkan gambar sesuai kategori BMI
+    # Gambar sesuai kategori
     image_path = ""
     if category == "Underweight":
         image_path = "images/under.jpeg"
@@ -44,61 +46,52 @@ def view_result(bmi, category, weight_change, action):
         image_path = "images/obes.jpeg"
 
     if image_path and os.path.exists(image_path):
-        st.image(image_path, caption=f"Kategori BMI: {category}", use_column_width=600, width=250)
+        st.image(image_path, caption=f"Kategori BMI: {category}", width=200)
     else:
-        st.write("Gambar tidak tersedia untuk kategori ini.")
+        st.info("Gambar tidak tersedia untuk kategori ini.")
 
-# Fungsi untuk menyimpan data BMI ke CSV
+# Fungsi menyimpan data ke Google Sheets
 def save_data(name, weight, height, bmi, category):
-    # Format BMI menjadi 1 digit di belakang koma
-    bmi = f"{bmi:.1f}"
-
-    data = {
-        "Nama": [name],  # Pastikan 'name' diambil dari input
-        "Berat Badan (kg)": [weight],
-        "Tinggi Badan (cm)": [height],
-        "BMI": [bmi],
-        "Kategori": [category]
-    }
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     
-    df = pd.DataFrame(data)
-    
-    # Jika file CSV tidak ada, buat file baru
-    if not os.path.exists("data_bmi.csv"):
-        df.to_csv("data_bmi.csv", index=False)
-    else:
-        df.to_csv("data_bmi.csv", mode='a', header=False, index=False)
+    # Menggunakan kredensial yang diatur di secrets.toml
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets["connections"]["gsheets"], scope)
+    client = gspread.authorize(creds)
 
-# Fungsi untuk halaman BMI
+    # Mengakses spreadsheet yang sudah ada
+    spreadsheet = client.open("data_glyco")
+    sheet = spreadsheet.sheet1
+
+    row = [name, weight, height, f"{bmi:.1f}", category]
+    sheet.append_row(row)
+
+# Fungsi utama halaman BMI
 def run():
-    # Menambahkan gambar
     st.image('images/indeks BMI.jpeg', caption='INDEKS BMI', width=600)
-    st.title("Kalkulator BMI")
-    
-    # Input untuk nama
+    st.title("🧮 Kalkulator BMI")
+
+    if os.path.exists("styles.css"):
+        with open("styles.css") as f:
+            st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
     name_input = st.text_input("Masukkan nama Anda", placeholder="Nama")
-    # Input untuk berat badan
     weight_input = st.text_input("Masukkan berat badan Anda (kg):", placeholder="0")
-    # Input untuk tinggi badan
     height_input = st.text_input("Masukkan tinggi badan Anda (cm):", placeholder="0")
 
-    try:
-        weight = float(weight_input)
-        height = float(height_input)
-    except ValueError:
-        st.write("Silakan masukkan berat dan tinggi badan yang valid (numerik).")
-        return
+    if st.button("Cek BMI"):
+        try:
+            weight = float(weight_input)
+            height = float(height_input)
 
-    if weight > 0 and height > 0:
-        bmi = weight / ((height / 100) ** 2)
-        st.write(f"BMI Anda adalah: {bmi:.2f}")
+            if weight > 0 and height > 0 and name_input.strip():
+                bmi = weight / ((height / 100) ** 2)
+                st.write(f"BMI Anda adalah: **{bmi:.2f}**")
 
-        kategori, weight_change, action = kategori_bmi(bmi, height, weight)
-        
-        # Melihat hasil dan rekomendasi
-        if st.button("Lihat Hasil"):
-            view_result(bmi, kategori, weight_change, action)
-            # Tambahkan name_input dalam save_data
-            save_data(name_input, weight, height, bmi, kategori)  # Menyimpan data BMI ke CSV
-    else:
-        st.write("Silakan masukkan berat dan tinggi badan yang valid untuk menghitung BMI.")
+                kategori, weight_change, action = kategori_bmi(bmi, height, weight)
+
+                view_result(bmi, kategori, weight_change, action)
+                save_data(name_input, weight, height, bmi, kategori)
+            else:
+                st.warning("Semua input harus diisi dan bernilai lebih dari 0.")
+        except ValueError:
+            st.error("Masukkan berat dan tinggi badan dalam format angka.")

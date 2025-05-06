@@ -1,58 +1,9 @@
 import streamlit as st
 
 def page_description():
-    # CSS untuk mempercantik tampilan
-    st.markdown("""
-        <style>
-            .title-container {
-                font-size: 40px;
-                font-weight: 800;
-                color: #007BFF;
-                line-height: 1.2;
-                margin-bottom: 10px;
-            }
-            .custom-title {
-              color: #007BFF; /* Warna biru */
-              font-size: 35px;
-              font-weight: bold;
-              margin-bottom: 15px;
-            }
-            .description-container {
-                font-size: 18px;
-                color: #333;
-                margin-bottom: 20px;
-            }
-            .info-card {
-                background-color: #fdf3f3;
-                padding: 20px;
-                border-radius: 15px;
-                text-align: center;
-                box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
-                width: 160px;
-                margin-top: 20px;
-            }
-            .info-card h3 {
-                margin: 0;
-                font-size: 28px;
-                color: #B80000;
-            }
-            .info-card p {
-                margin: 0;
-                font-size: 14px;
-                color: #555;
-            }
-            .btn-custom {
-                padding: 0.6em 1.4em;
-                border-radius: 8px;
-                border: none;
-                background-color: #B80000;
-                color: white;
-                font-weight: bold;
-                font-size: 16px;
-                margin-right: 10px;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+    # Load style.css
+    with open("styles.css") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     # Tampilan dua kolom
     col1, col2 = st.columns([2, 1])
@@ -64,9 +15,6 @@ def page_description():
             '<div class="description-container">Aplikasi ini menggunakan teknologi AI untuk membantu Anda mendeteksi risiko diabetes berdasarkan faktor kesehatan dan gaya hidup Anda. Dapatkan hasil prediksi instan hanya dengan beberapa input sederhana.</div>',
             unsafe_allow_html=True,
         )
-        
-
-        # Keunggulan
         st.markdown("✅ Teknologi AI Terkini &nbsp;&nbsp;&nbsp; ✅ Hasil Cepat &nbsp;&nbsp;&nbsp; ✅ Tampilan Interaktif")
 
     # Konten Kanan

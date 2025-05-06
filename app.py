@@ -8,16 +8,13 @@ from components.data_bmi import run_data_bmi
 from components.data_diabetes import run as run_data_diabetes
 
 def main():
-    # Tampilkan header aplikasi di sidebar
-    st.sidebar.markdown(
-        f"""
-        <div style="display: flex; align-items: center; margin-bottom: 20px;">
-            <img src="https://storage.googleapis.com/a1aa/image/ihHHKeqSpQVgVKqTDa7rj1n3gMEUBH9xugnIMJetbDyfiPSoA.jpg" width="50" height="50" style="margin-right: 10px;">
-            <h1 style="font-size: 24px; font-weight: bold;">Aplikasi GlycoVision</h1>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    # Sidebar dengan logo dan judul horizontal
+    with st.sidebar:
+        col1, col2 = st.columns([1, 3])
+        with col1:
+            st.image("images/logo glyco.png", width=100)  # Pastikan path dan nama file benar
+        with col2:
+            st.markdown("<h3 style='margin-top: 30px; margin-left:30px;'>GlycoVision APP</h2>", unsafe_allow_html=True)
 
     # Menyimpan halaman yang dipilih dalam session state
     if 'selected_page' not in st.session_state:
