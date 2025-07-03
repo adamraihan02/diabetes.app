@@ -136,10 +136,10 @@ def page_description():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.image('images/pompa insulin.jpeg', caption='pompa insulin by:hallosehat', use_column_width=True)
+        st.image('images/pompa insulin.jpeg', caption='pompa insulin by:hallosehat', use_container_width=True)
 
     with col2:
-        st.image('images/sensor glukosa.jpeg', caption='sensor glukosa darah', use_column_width=True)
+        st.image('images/sensor glukosa.jpeg', caption='sensor glukosa darah', use_container_width=True)
 
     st.markdown('<h2 class="custom-subtitle">Apa perbedaan antara hipoglikemia dan hiperglikemia?</h2>', unsafe_allow_html=True)
     st.markdown('<p class="custom-text"><strong>Hipoglikemia:</strong> Kondisi di mana kadar gula darah terlalu rendah. Ini sering disebut dengan gula darah rendah. Gejalanya bisa berupa:</p>', unsafe_allow_html=True)
