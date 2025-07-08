@@ -6,7 +6,7 @@ def sidebar():
     with st.sidebar:
         selected = option_menu(
             menu_title="Menu",
-            options=["Dashboard", "Kalkulator BMI", "Prediksi", "Lokasi Rumah Sakit", "Data BMI", "Data Diabetes"],
+            options=["Edukasi Diabetes", "Kalkulator BMI", "Prediksi", "Lokasi Rumah Sakit", "Data BMI", "Data Diabetes"],
             icons = ["house", "calculator", "graph-up-arrow", "hospital", "table", "map"],
             menu_icon="grid",
             default_index=0,
