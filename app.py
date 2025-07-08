@@ -2,7 +2,7 @@ import streamlit as st
 from auth import login, logout_button
 
 from components.sidebar import sidebar
-from components.dashboard import page_description
+from components.edukasi import page_description
 from components.bmi import run as run_bmi
 from components.prediksi import run as run_prediksi
 from components.rumahsakit import run as run_rumahsakit
