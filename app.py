@@ -25,7 +25,7 @@ def main():
     selected_page = sidebar()
 
     # Routing ke halaman
-    if selected_page == "Dashboard":
+    if selected_page == "Edukasi Diabetes":
         page_description()
     elif selected_page == "Kalkulator BMI":
         run_bmi()
