@@ -9,3 +9,6 @@ seaborn
 folium
 streamlit-folium
 streamlit-option-menu
+streamlit-authenticator
+PyYAML
+bcrypt
